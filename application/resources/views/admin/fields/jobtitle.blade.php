@@ -1,17 +1,17 @@
 @extends('layouts.default')
 
-    @section('meta')
-        <title>Job Titles | Workday Time Clock</title>
-        <meta name="description" content="Workday job titles, view job titles, and export or download job titles.">
-    @endsection
+@section('meta')
+<title>Cargos | Pontual</title>
+<meta name="description" content="Workday job titles, view job titles, and export or download job titles.">
+@endsection
 
-    @section('content')
-    @include('admin.modals.modal-import-jobtitle')
+@section('content')
+@include('admin.modals.modal-import-jobtitle')
 
-    <div class="container-fluid">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <h2 class="page-title">{{ __("Add Job Title") }}
+            <h2 class="page-title">{{ __("Incluir Novo Cargo") }}
                 <button class="ui basic button mini offsettop5 btn-import float-right"><i class="ui icon upload"></i> {{ __("Import") }}</button>
                 <a href="{{ url('export/fields/jobtitle' )}}" class="ui basic button mini offsettop5 btm-export float-right"><i class="ui icon download"></i> {{ __("Export") }}</a>
             </h2>
@@ -28,7 +28,7 @@
                         <div class="header">{{ __("There were some errors with your submission") }}</div>
                         <ul class="list">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                            <li>{{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -36,19 +36,19 @@
                     <form id="add_jobtitle_form" action="{{ url('fields/jobtitle/add') }}" class="ui form" method="post" accept-charset="utf-8">
                         @csrf
                         <div class="field">
-                            <label>{{ __("Department") }}</label>
+                            <label>{{ __("Departamento") }}</label>
                             <select name="department" class="ui search dropdown getdeptcode">
-                                <option value="">Select Department</option>
+                                <option value="">Selecione o Departamento</option>
                                 @isset($d)
-                                    @foreach ($d as $dept)
-                                    <option value="{{ $dept->department }}" data-id="{{ $dept->id }}"> {{ $dept->department
+                                @foreach ($d as $dept)
+                                <option value="{{ $dept->department }}" data-id="{{ $dept->id }}"> {{ $dept->department
                                         }}</option>
-                                    @endforeach
+                                @endforeach
                                 @endisset
                             </select>
                         </div>
                         <div class="field">
-                            <label>{{ __("Job Title") }} <span class="help">e.g. "Chief Executive Officer"</span></label>
+                            <label>{{ __("Cargo") }} <span class="help">e.g. "Chief Executive Officer"</span></label>
                             <input class="uppercase" name="jobtitle" value="" type="text" value="">
                         </div>
                         <div class="field">
@@ -62,7 +62,7 @@
                         </div>
                         <div class="actions">
                             <input type="hidden" name="dept_code" value="">
-                            <button type="submit" class="ui positive button small"><i class="ui icon check"></i> {{ __("Save") }}</button>
+                            <button type="submit" class="ui positive button small"><i class="ui icon check"></i> {{ __("Salvar") }}</button>
                         </div>
                     </form>
                 </div>
@@ -75,8 +75,8 @@
                     <table width="100%" class="table table-striped table-hover" id="dataTables-example" data-order='[[ 1, "asc" ]]'>
                         <thead>
                             <tr>
-                                <th>{{ __("Job Title") }}</th>
-                                <th>{{ __("Department") }}</th>
+                                <th>{{ __("Cargo") }}</th>
+                                <th>{{ __("Departamento") }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -87,11 +87,11 @@
                                 <td>{{ $j->jobtitle }}</td>
                                 <td>
                                     @isset($d)
-                                        @foreach($d as $dept)
-                                            @if($j->dept_code == $dept->id)
-                                                {{ $dept->department }}
-                                            @endif
-                                        @endforeach
+                                    @foreach($d as $dept)
+                                    @if($j->dept_code == $dept->id)
+                                    {{ $dept->department }}
+                                    @endif
+                                    @endforeach
                                     @endisset
                                 </td>
                                 <td class="align-right"><a href="{{ url('fields/jobtitle/delete/'.$j->id) }}" class="ui circular basic icon button tiny"><i class="icon trash alternate outline"></i></a></td>
@@ -104,17 +104,23 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 
-    @endsection
+@endsection
 
-    @section('scripts')
-    <script type="text/javascript">
-    $('#dataTables-example').DataTable({responsive: true,pageLength: 15,lengthChange: false,searching: true,ordering: true});
+@section('scripts')
+<script type="text/javascript">
+    $('#dataTables-example').DataTable({
+        responsive: true,
+        pageLength: 15,
+        lengthChange: false,
+        searching: true,
+        ordering: true
+    });
 
     $('.ui.dropdown.getdeptcode').dropdown({
-        onChange: function (value, text, $selectedItem) {
-            $('select[name="department"] option').each(function () {
+        onChange: function(value, text, $selectedItem) {
+            $('select[name="department"] option').each(function() {
                 if ($(this).val() == value) {
                     var id = $(this).attr('data-id');
                     $('input[name="dept_code"]').val(id);
@@ -138,6 +144,6 @@
             });
         }
     }
-    </script>
+</script>
 
-    @endsection
+@endsection

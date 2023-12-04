@@ -1,64 +1,64 @@
 @extends('layouts.clock')
 
-    @section('content')
-    
-    <div class="container-fluid">
-        <div class="fixedcenter">
-            <div class="clockwrapper">
-                <div class="clockinout">
-                    <button class="btnclock timein active" data-type="timein">{{ __("Time In") }}</button>
-                    <button class="btnclock timeout" data-type="timeout">{{ __("Time Out") }}</button>
-                </div>
-            </div>
-            <div class="clockwrapper">
-                <div class="timeclock">
-                    <span id="show_day" class="clock-text"></span>
-                    <span id="show_time" class="clock-time"></span>
-                    <span id="show_date" class="clock-day"></span>
-                </div>
-            </div>
+@section('content')
 
-            <div class="clockwrapper">
-                <div class="userinput">
-                    <form action="" method="get" accept-charset="utf-8" class="ui form">
-                        @isset($cc)
-                            @if($cc == "on") 
-                                <div class="inline field comment">
-                                    <textarea name="comment" class="uppercase lightblue" rows="1" placeholder="Enter comment" value=""></textarea>
-                                </div> 
-                            @endif
-                        @endisset
-                        <div class="inline field">
-                            <input @if($rfid == 'on') id="rfid" @endif class="enter_idno uppercase @if($rfid == 'on') mr-0 @endif" name="idno" value="" type="text" placeholder="{{ __("ENTER YOUR ID") }}" required autofocus>
-
-                            @if($rfid !== "on")
-                                <button id="btnclockin" type="button" class="ui positive large icon button">{{ __("Confirm") }}</button>
-                            @endif
-                            <input type="hidden" id="_url" value="{{url('/')}}">
-                        </div>
-                    </form>
-                </div>
+<div class="container-fluid">
+    <div class="fixedcenter">
+        <div class="clockwrapper">
+            <div class="clockinout">
+                <button class="btnclock timein active" data-type="timein">{{ __("Entrada") }}</button>
+                <button class="btnclock timeout" data-type="timeout">{{ __("Saída") }}</button>
             </div>
-
-            <div class="message-after">
-                <p> 
-                    <span id="greetings">{{ __("Welcome!") }}</span> 
-                    <span id="fullname"></span>
-                </p>
-                <p id="messagewrap">
-                    <span id="type"></span>
-                    <span id="message"></span> 
-                    <span id="time"></span>
-                </p>
+        </div>
+        <div class="clockwrapper">
+            <div class="timeclock">
+                <span id="show_day" class="clock-text"></span>
+                <span id="show_time" class="clock-time"></span>
+                <span id="show_date" class="clock-day"></span>
             </div>
         </div>
 
+        <div class="clockwrapper">
+            <div class="userinput">
+                <form action="" method="get" accept-charset="utf-8" class="ui form">
+                    @isset($cc)
+                    @if($cc == "on")
+                    <div class="inline field comment">
+                        <textarea name="comment" class="uppercase lightblue" rows="1" placeholder="Enter comment" value=""></textarea>
+                    </div>
+                    @endif
+                    @endisset
+                    <div class="inline field">
+                        <input @if($rfid=='on' ) id="rfid" @endif class="enter_idno uppercase @if($rfid == 'on') mr-0 @endif" name="idno" value="" type="text" placeholder="{{ __("ENTER YOUR ID") }}" required autofocus>
+
+                        @if($rfid !== "on")
+                        <button id="btnclockin" type="button" class="ui positive large icon button">{{ __("Incluir") }}</button>
+                        @endif
+                        <input type="hidden" id="_url" value="{{url('/')}}">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="message-after">
+            <p>
+                <span id="greetings">{{ __("!") }}</span>
+                <span id="fullname"></span>
+            </p>
+            <p id="messagewrap">
+                <span id="type"></span>
+                <span id="message"></span>
+                <span id="time"></span>
+            </p>
+        </div>
     </div>
 
-    @endsection
+</div>
 
-    @section('scripts')
-    <script type="text/javascript">
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
     // elements day, time, date
     var elTime = document.getElementById('show_time');
     var elDate = document.getElementById('show_date');
@@ -70,10 +70,10 @@
         var time = moment().tz(timezone);
 
         // set time in html
-        @if($tf == 1) 
-            elTime.innerHTML= time.format("hh:mm:ss A");
+        @if($tf == 1)
+        elTime.innerHTML = time.format("hh:mm:ss A");
         @else
-            elTime.innerHTML= time.format("kk:mm:ss");
+        elTime.innerHTML = time.format("kk:mm:ss");
         @endif
 
         // set date in html
@@ -98,7 +98,7 @@
         $(this).toggleClass('active animated fadeIn');
     });
 
-    $("#rfid").on("input", function(){
+    $("#rfid").on("input", function() {
         var url, type, idno, comment;
         url = $("#_url").val();
         type = $('.btnclock.active').data("type");
@@ -110,11 +110,21 @@
             $(this).val("");
         }, 600);
 
-        $.ajax({ url: url + '/attendance/add', type: 'post', dataType: 'json', data: {idno: idno, type: type, clockin_comment: comment}, headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+        $.ajax({
+            url: url + '/attendance/add',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                idno: idno,
+                type: type,
+                clockin_comment: comment
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
 
             success: function(response) {
-                if(response['error'] != null) 
-                {
+                if (response['error'] != null) {
                     $('.message-after').addClass('notok').hide();
                     $('#type, #fullname').text("").hide();
                     $('#time').html("").hide();
@@ -152,11 +162,20 @@
         comment = $('textarea[name="comment"]').val();
 
         $.ajax({
-            url: url + '/attendance/add',type: 'post',dataType: 'json',data: {idno: idno, type: type, clockin_comment: comment},headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+            url: url + '/attendance/add',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                idno: idno,
+                type: type,
+                clockin_comment: comment
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
 
             success: function(response) {
-                if(response['error'] != null) 
-                {
+                if (response['error'] != null) {
                     $('.message-after').addClass('notok').hide();
                     $('#type, #fullname').text("").hide();
                     $('#time').html("").hide();
@@ -184,6 +203,6 @@
             }
         })
     });
-    </script> 
+</script>
 
-    @endsection
+@endsection
