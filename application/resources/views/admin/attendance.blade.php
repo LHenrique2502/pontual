@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('meta')
-<title>Attendance | Workday Time Clock</title>
+<title>Registros de Ponto | Pontual</title>
 <meta name="description" content="Workday attendance, view all employee attendances, clock-in, edit, and delete attendances.">
 @endsection
 

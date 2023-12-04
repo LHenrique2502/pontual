@@ -34,7 +34,7 @@
                         @foreach ($data as $employee)
                         <tr class="">
                             <td>{{ $employee->idno }}</td>
-                            <td>{{ $employee->lastname }}, {{ $employee->firstname }}</td>
+                            <td>{{ $employee->firstname }}, {{ $employee->lastname }}</td>
                             <td>{{ $employee->company }}</td>
                             <td>{{ $employee->department }}</td>
                             <td>{{ $employee->jobposition }}</td>

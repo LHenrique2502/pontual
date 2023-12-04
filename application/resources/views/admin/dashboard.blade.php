@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('meta')
-<title>Dashboard | Workday Time Clock</title>
+<title>Dashboard | Pontual</title>
 <meta name="description" content="Workday dashboard, view recent attendance, recent leaves of absence, and newest employees">
 @endsection
 
@@ -120,9 +120,9 @@
                             @isset($emp_all_type)
                             @foreach ($emp_all_type as $data)
                             <tr>
-                                <td class="text-left name-title">{{ $data->lastname }}, {{ $data->firstname }}</td>
+                                <td class="text-left name-title">{{ $data->firstname }}, {{ $data->lastname }}</td>
                                 <td class="text-left">{{ $data->jobposition }}</td>
-                                <td class="text-left">@php echo e(date('M d, Y', strtotime($data->startdate))) @endphp</td>
+                                <td class="text-left">@php echo e(date('d/m/Y', strtotime($data->startdate))) @endphp</td>
                             </tr>
                             @endforeach
                             @endisset
@@ -227,7 +227,7 @@
                             @foreach ($emp_approved_leave as $leaves)
                             <tr>
                                 <td class="text-left name-title">{{ $leaves->employee }}</td>
-                                <td class="text-left">@php echo e(date('M d, Y', strtotime($leaves->leavefrom))) @endphp</td>
+                                <td class="text-left">@php echo e(date('d/m/Y', strtotime($leaves->leavefrom))) @endphp</td>
                             </tr>
                             @endforeach
                             @endisset
